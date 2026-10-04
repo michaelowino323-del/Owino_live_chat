@@ -1050,3 +1050,103 @@ window.onclick=function(event){
   console.log("Owino Live connected to Supabase");
 </script>
 </html>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const modal = document.getElementById("signupModal");
+
+  if (!modal) return;
+
+  const inputs = modal.querySelectorAll("input");
+
+  const nameInput = modal.querySelector('input[type="text"]');
+  const emailInput = modal.querySelector('input[type="email"]');
+  const passwordInput = modal.querySelector('input[type="password"]');
+
+  const buttons = modal.querySelectorAll("button");
+
+  let signupButton = null;
+
+  buttons.forEach(function(button) {
+    const text = button.innerText.toLowerCase();
+
+    if (
+      text.includes("sign up") ||
+      text.includes("create account") ||
+      text.includes("create")
+    ) {
+      signupButton = button;
+    }
+  });
+
+  if (!signupButton || !emailInput || !passwordInput) {
+    console.log("Owino Live signup form not ready");
+    return;
+  }
+
+  signupButton.addEventListener("click", async function(event) {
+
+    event.preventDefault();
+
+    const fullName = nameInput ? nameInput.value.trim() : "";
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+
+    if (!fullName) {
+      alert("Please enter your full name.");
+      return;
+    }
+
+    if (!email) {
+      alert("Please enter your email.");
+      return;
+    }
+
+    if (password.length < 6) {
+      alert("Password must be at least 6 characters.");
+      return;
+    }
+
+    signupButton.disabled = true;
+    signupButton.innerText = "Creating account...";
+
+    try {
+
+      const { data, error } =
+        await window.owinoSupabase.auth.signUp({
+          email: email,
+          password: password,
+          options: {
+            data: {
+              full_name: fullName
+            }
+          }
+        });
+
+      if (error) {
+        throw error;
+      }
+
+      alert(
+        "Account created successfully! Please check your email to confirm your account."
+      );
+
+      console.log("Owino Live account created:", data);
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert("Sign up failed: " + error.message);
+
+    } finally {
+
+      signupButton.disabled = false;
+      signupButton.innerText = "Sign up";
+
+    }
+
+  });
+
+});
+</script>
