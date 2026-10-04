@@ -1034,18 +1034,23 @@ window.onclick=function(event){
 
 </script>
 
-</body><!-- Supabase connection -->
+</body<<!-- Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
   const OWINO_SUPABASE_URL = "https://owtgzvvvnbmxtricerid.supabase.co";
-
   const OWINO_SUPABASE_KEY = "sb_publishable_8hOxB_sRLTTolDEZvrrZ_Q_PpBQntXN
+  const { createClient } = window.supabase;
 
-  window.owinoSupabase = window.supabase.createClient(
+  const owinoSupabase = createClient(
     OWINO_SUPABASE_URL,
     OWINO_SUPABASE_KEY
   );
+
+  window.owinoSupabase = owinoSupabase;
+
+  console.log("Owino Live: Supabase connected");
+</script>
 
   console.log("Owino Live connected to Supabase");
 </script>
